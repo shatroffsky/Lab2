@@ -17,7 +17,10 @@ public class Main {
             final int number = numbers[i];
             futures[i] = executor.submit(new Callable<BigInteger>() {
                 @Override
-                public BigInteger call() {
+                public BigInteger call() throws InterruptedException {
+                    // Емулюємо затримку для кожного потоку
+                    Thread.sleep(1000);
+
                     // Обчислюємо факторіал
                     BigInteger factorial = factorial(number);
                     // Зберігаємо результат у мапі
@@ -26,6 +29,9 @@ public class Main {
                 }
             });
         }
+
+        // Скасовуємо одну із задач для демонстрації
+        futures[2].cancel(true);
 
         // Збираємо результати
         for (int i = 0; i < futures.length; i++) {
